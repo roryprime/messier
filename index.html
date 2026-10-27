@@ -122,10 +122,21 @@
       font-weight: 600;
     }
 
+    /* Header widgets row */
+    .widgets-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      margin: 1.75rem auto 0.5rem;
+      max-width: 860px;
+    }
+
     /* Integration time widget */
     .integration-widget {
-      margin: 1.75rem auto 0.5rem;
+      flex: 1 1 280px;
       max-width: 420px;
+      margin: 0;
       padding: 1.1rem 1.5rem;
       background: linear-gradient(135deg, rgba(110, 198, 255, 0.08), rgba(124, 92, 255, 0.06));
       border: 1px solid rgba(110, 198, 255, 0.22);
@@ -189,6 +200,93 @@
       font-size: 0.78rem;
       color: var(--muted);
       margin-top: 0.2rem;
+    }
+
+    /* Progress bar widget */
+    .progress-widget {
+      flex: 1 1 280px;
+      max-width: 420px;
+      margin: 0;
+      padding: 1rem 1.4rem 1.15rem;
+      background: linear-gradient(135deg, rgba(110, 198, 255, 0.08), rgba(124, 92, 255, 0.06));
+      border: 1px solid rgba(110, 198, 255, 0.22);
+      border-radius: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .progress-widget::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 70% 30%, rgba(110, 198, 255, 0.12), transparent 60%);
+      pointer-events: none;
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 0.55rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .progress-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      opacity: 0.85;
+    }
+
+    .progress-count {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .progress-count span {
+      color: var(--accent);
+    }
+
+    .progress-track {
+      height: 10px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 999px;
+      overflow: hidden;
+      position: relative;
+      z-index: 1;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), #a78bfa);
+      border-radius: 999px;
+      transition: width 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+      box-shadow: 0 0 12px rgba(110, 198, 255, 0.4);
+    }
+
+    .progress-percent {
+      text-align: right;
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 0.35rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    @media (max-width: 620px) {
+      .widgets-row {
+        flex-direction: column;
+        align-items: center;
+      }
+      .integration-widget,
+      .progress-widget {
+        width: 100%;
+        max-width: 420px;
+      }
     }
 
     /* Controls */
@@ -757,17 +855,25 @@
     <header>
       <div class="logo">Deep Sky Portfolio</div>
       <h1>Messier Catalogue</h1>
-      <p class="subtitle">A personal collection of photographs of the 110 objects catalogued by Charles Messier.</p>
-      <div class="stats">
-        <span><strong id="count-visible">0</strong> objects shown</span>
-        <span><strong id="count-total">0</strong> in collection</span>
-      </div>
-      <div class="integration-widget">
-        <div class="integration-icon">⏱️</div>
-        <div class="integration-content">
-          <div class="integration-label">Total Integration</div>
-          <div class="integration-value"><span id="total-hours">0</span><span>h</span></div>
-          <div class="integration-sub" id="integration-sub">across all photographs</div>
+      <p class="subtitle">A personal collection of photographs of the 110 objects catalogued by Charles Messier, imaged by Rory Prime</p>
+      <div class="widgets-row">
+        <div class="integration-widget">
+          <div class="integration-icon">⏱️</div>
+          <div class="integration-content">
+            <div class="integration-label">Total Integration</div>
+            <div class="integration-value"><span id="total-hours">0</span><span>h</span></div>
+            <div class="integration-sub" id="integration-sub">across all photographs</div>
+          </div>
+        </div>
+        <div class="progress-widget">
+          <div class="progress-header">
+            <div class="progress-label">Messier Progress</div>
+            <div class="progress-count"><span id="progress-done">0</span> / 110</div>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" id="progress-fill"></div>
+          </div>
+          <div class="progress-percent" id="progress-percent">0% complete</div>
         </div>
       </div>
     </header>
@@ -827,6 +933,22 @@
             <dt>Integration</dt>
             <dd id="lb-int"></dd>
           </div>
+          <div>
+            <dt>Device</dt>
+            <dd id="lb-device"></dd>
+          </div>
+          <div>
+            <dt>Bortle</dt>
+            <dd id="lb-bortle"></dd>
+          </div>
+          <div>
+            <dt>Sub-exposure</dt>
+            <dd id="lb-sub"></dd>
+          </div>
+          <div>
+            <dt>Filter</dt>
+            <dd id="lb-filter"></dd>
+          </div>
           <div style="grid-column: 1 / -1">
             <dt>Notes</dt>
             <dd id="lb-notes"></dd>
@@ -837,8 +959,6 @@
   </div>
 
   <footer>
-    <p>Personal Messier Catalogue · Images hosted alongside this page</p>
-    <p style="margin-top:0.4rem;opacity:0.7">Add more objects to the <code>objects</code> array as you complete them</p>
   </footer>
 
   <script>
@@ -878,7 +998,11 @@
         notes: "First planetary nebula discovered",
         desc: "The Dumbbell Nebula (M27) was the first planetary nebula ever discovered, by Charles Messier in 1764. Its distinctive apple-core or dumbbell shape is visible even in small telescopes.",
         image: "images/M27_Final_07-10-2026-cropped.jpg",
-        integration: 0.83
+        integration: 0.83,
+        device: "Seestar S50 Pro",
+        bortle: "5",
+        subExposure: "10 sec",
+        filter: "LP filter"
       },
       {
         id: "M15",
@@ -892,7 +1016,11 @@
         notes: "Great Pegasus Cluster",
         desc: "Messier 15 is a bright, dense globular cluster in Pegasus. It is one of the oldest known globulars and contains a large number of variable stars.",
         image: "images/M15_Final_07-10-2026-cropped.jpg",
-        integration: 0.33
+        integration: 0.33,
+        device: "Seestar S50 Pro",
+        bortle: "5",
+        subExposure: "20 sec",
+        filter: "IRCut"
       },
       {
         id: "M33",
@@ -906,7 +1034,11 @@
         notes: "Third-largest Local Group member",
         desc: "The Triangulum Galaxy is a face-on spiral and a member of the Local Group. Under dark skies it can be glimpsed with the naked eye; its large angular size rewards wide-field imaging.",
         image: "images/M33_Final_07-10-2026.jpg",
-        integration: 3.5
+        integration: 3.5,
+        device: "Seestar S50 Pro",
+        bortle: "5",
+        subExposure: "20 sec",
+        filter: "IR Cut"
       }
     ];
 
@@ -950,9 +1082,6 @@
         return matchType && matchSearch;
       });
 
-      document.getElementById("count-visible").textContent = filtered.length;
-      document.getElementById("count-total").textContent = objects.length;
-
       // Update total integration time (sum of all objects, not just filtered)
       const totalHours = objects.reduce((sum, obj) => sum + (Number(obj.integration) || 0), 0);
       const hoursEl = document.getElementById("total-hours");
@@ -987,6 +1116,16 @@
           subEl.textContent = `≈ ${days} days of photon collection`;
         }
       }
+
+      // Update Messier progress bar
+      const done = objects.length;
+      const pct = Math.min(100, (done / 110) * 100);
+      const doneEl = document.getElementById("progress-done");
+      const fillEl = document.getElementById("progress-fill");
+      const pctEl = document.getElementById("progress-percent");
+      if (doneEl) doneEl.textContent = done;
+      if (fillEl) fillEl.style.width = pct.toFixed(1) + "%";
+      if (pctEl) pctEl.textContent = pct.toFixed(1) + "% complete";
 
       if (filtered.length === 0) {
         gallery.innerHTML = `
@@ -1054,6 +1193,10 @@
       document.getElementById("lb-int").textContent = obj.integration
         ? (obj.integration < 1 ? Math.round(obj.integration * 60) + " minutes" : Number(obj.integration).toFixed(1) + " hours")
         : "—";
+      document.getElementById("lb-device").textContent = obj.device || "—";
+      document.getElementById("lb-bortle").textContent = obj.bortle || "—";
+      document.getElementById("lb-sub").textContent = obj.subExposure || "—";
+      document.getElementById("lb-filter").textContent = obj.filter || "—";
       document.getElementById("lb-notes").textContent = obj.notes;
 
       lb.classList.add("open");
