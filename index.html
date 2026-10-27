@@ -675,6 +675,35 @@
     .lightbox-prev { left: 1rem; }
     .lightbox-next { right: 1rem; }
 
+    .fullsize-btn {
+      position: absolute;
+      bottom: 1rem;
+      right: 1rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 8px;
+      border: 1px solid rgba(110, 198, 255, 0.4);
+      background: rgba(0, 0, 0, 0.65);
+      color: var(--accent);
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      transition: background 0.2s, border-color 0.2s;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .fullsize-btn:hover {
+      background: rgba(110, 198, 255, 0.15);
+      border-color: var(--accent);
+    }
+
+    .lightbox-image img {
+      cursor: zoom-in;
+    }
+
     /* Footer */
     footer {
       text-align: center;
@@ -770,6 +799,7 @@
     <div class="lightbox-content">
       <div class="lightbox-image">
         <img id="lb-img" src="" alt="" />
+        <button class="fullsize-btn" id="lb-fullsize" title="Open image at full resolution">⤢ Full size</button>
       </div>
       <div class="lightbox-info">
         <div class="lightbox-id" id="lb-id"></div>
@@ -807,8 +837,8 @@
   </div>
 
   <footer>
-    <p>Built for sharing your Messier photographs · Replace the image URLs in the script with your own files</p>
-    <p style="margin-top:0.4rem;opacity:0.7">Data based on the classic Messier Catalogue · Images shown are public-domain placeholders for demonstration</p>
+    <p>Personal Messier Catalogue · Images hosted alongside this page</p>
+    <p style="margin-top:0.4rem;opacity:0.7">Add more objects to the <code>objects</code> array as you complete them</p>
   </footer>
 
   <script>
@@ -838,174 +868,6 @@
     const objects = [
       {
         id: "M27",
-        name: "Dumbbell Nedula",
-        type: "nebula",
-        typeFull: "Spiral Galaxy",
-        constellation: "Andromeda",
-        mag: "3.4",
-        sizeArc: "178′ × 63′",
-        size: "xl",
-        notes: "Nearest major galaxy · largest apparent size",
-        desc: "The Andromeda Galaxy is the closest spiral galaxy to the Milky Way and the most distant object easily visible to the naked eye. Its enormous angular size (nearly 3°) makes it one of the most impressive deep-sky targets for wide-field imaging.",
-        image: "images/M27_Final_07-10-2026-cropped.jpg",
-        integration: 12.5
-      },
-      {
-        id: "M42",
-        name: "Orion Nebula",
-        type: "nebula",
-        typeFull: "Planetary nebula",
-        constellation: "Vulpecula",
-        mag: "4.0",
-        sizeArc: "85′ × 60′",
-        size: "xl",
-        notes: "Brightest nebula in the sky",
-        desc: "The most famous and brightest diffuse nebula visible from Earth. The Trapezium cluster of young stars illuminates the surrounding gas, creating a spectacular sight even in binoculars. Its large size rewards wide-field and high-resolution imaging alike.",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Orion_Nebula_-_Hubble_2006_mosaic_18000.jpg/800px-Orion_Nebula_-_Hubble_2006_mosaic_18000.jpg",
-        integration: 8.0
-      },
-      {
-        id: "M45",
-        name: "Pleiades",
-        type: "open",
-        typeFull: "Open Cluster",
-        constellation: "Taurus",
-        mag: "1.6",
-        sizeArc: "~110′",
-        size: "xl",
-        notes: "The Seven Sisters",
-        desc: "One of the nearest and most famous open clusters. Blue reflection nebulosity surrounds the brightest stars. Easily visible to the naked eye and a favourite wide-field target — it fills a large portion of the frame.",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Pleiades_large.jpg/800px-Pleiades_large.jpg",
-        integration: 4.5
-      },
-      {
-        id: "M8",
-        name: "Lagoon Nebula",
-        type: "nebula",
-        typeFull: "Emission Nebula + Cluster",
-        constellation: "Sagittarius",
-        mag: "6.0",
-        sizeArc: "90′ × 40′",
-        size: "xl",
-        notes: "Bright summer target",
-        desc: "A giant interstellar cloud and H II region. The Lagoon Nebula is one of only two star-forming nebulae faintly visible to the naked eye from mid-northern latitudes. Its large angular size makes it ideal for wide-field photography.",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Lagoon_Nebula.jpg/800px-Lagoon_Nebula.jpg",
-        integration: 6.0
-      },
-      {
-        id: "M44",
-        name: "Beehive Cluster",
-        type: "open",
-        typeFull: "Open Cluster",
-        constellation: "Cancer",
-        mag: "3.7",
-        sizeArc: "~95′",
-        size: "lg",
-        notes: "Praesepe",
-        desc: "A large, nearby open cluster easily visible to the naked eye as a cloudy patch. Binoculars resolve dozens of stars; a perfect low-power / wide-field target that benefits from extra space on the page.",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Beehive_Cluster.jpg/800px-Beehive_Cluster.jpg",
-        integration: 3.0
-      },
-      {
-        id: "M33",
-        name: "Triangulum Galaxy",
-        type: "galaxy",
-        typeFull: "Spiral Galaxy",
-        constellation: "Triangulum",
-        mag: "5.7",
-        sizeArc: "73′ × 45′",
-        size: "lg",
-        notes: "Third-largest Local Group member",
-        desc: "A face-on spiral galaxy and a member of the Local Group. Under excellent dark skies it can be glimpsed with the naked eye. Its large angular size rewards wide-field imaging.",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Triangulum_Galaxy.jpg/800px-Triangulum_Galaxy.jpg",
-        integration: 15.0
-      },
-      {
-        id: "M101",
-        name: "Pinwheel Galaxy",
-        type: "galaxy",
-        typeFull: "Spiral Galaxy",
-        constellation: "Ursa Major",
-        mag: "7.9",
-        sizeArc: "29′ × 27′",
-        size: "lg",
-        notes: "Face-on grand design",
-        desc: "A large face-on spiral galaxy with well-defined spiral arms. Its substantial angular size makes it a rewarding but challenging target for deep imaging.",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/M101_hires_STScI-PRC2006-10a.jpg/800px-M101_hires_STScI-PRC2006-10a.jpg",
-        integration: 18.0
-      },
-      {
-        id: "M13",
-        name: "Hercules Globular Cluster",
-        type: "globular",
-        typeFull: "Globular Cluster",
-        constellation: "Hercules",
-        mag: "5.8",
-        sizeArc: "~20′",
-        size: "md",
-        notes: "Best northern globular",
-        desc: "Also known as the Great Globular Cluster in Hercules. Under dark skies it is just visible to the naked eye and resolves beautifully in moderate telescopes.",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Messier_13.jpg/800px-Messier_13.jpg",
-        integration: 5.5
-      },
-      {
-        id: "M16",
-        name: "Eagle Nebula",
-        type: "nebula",
-        typeFull: "Emission Nebula + Cluster",
-        constellation: "Serpens",
-        mag: "6.0",
-        sizeArc: "~7′",
-        size: "md",
-        notes: "Home of the Pillars of Creation",
-        desc: "Famous for the Pillars of Creation, towering columns of interstellar gas and dust captured in iconic Hubble images. The open cluster NGC 6611 is embedded within.",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Eagle_Nebula_from_ESO.jpg/800px-Eagle_Nebula_from_ESO.jpg",
-        integration: 10.0
-      },
-      {
-        id: "M17",
-        name: "Omega / Swan Nebula",
-        type: "nebula",
-        typeFull: "Emission Nebula + Cluster",
-        constellation: "Sagittarius",
-        mag: "6.0",
-        sizeArc: "~15′",
-        size: "md",
-        notes: "Also called the Horseshoe",
-        desc: "A bright emission nebula that resembles the Greek letter omega or a swan when viewed through a telescope. One of the most luminous H II regions in our galaxy.",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Omega_Nebula.jpg/800px-Omega_Nebula.jpg",
-        integration: 7.5
-      },
-      {
-        id: "M20",
-        name: "Trifid Nebula",
-        type: "nebula",
-        typeFull: "Emission + Reflection Nebula",
-        constellation: "Sagittarius",
-        mag: "6.3",
-        sizeArc: "~20′",
-        size: "md",
-        notes: "Triple-lobed appearance",
-        desc: "Named for the three dark dust lanes that divide the emission nebula into three sections. A combination of emission, reflection, and dark nebulae makes it uniquely colourful.",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Trifid_Nebula.jpg/800px-Trifid_Nebula.jpg",
-        integration: 9.0
-      },
-      {
-        id: "M1",
-        name: "Crab Nebula",
-        type: "snr",
-        typeFull: "Supernova Remnant",
-        constellation: "Taurus",
-        mag: "8.4",
-        sizeArc: "~6′ × 4′",
-        size: "md",
-        notes: "Remnant of the 1054 supernova",
-        desc: "The Crab Nebula is the remnant of a supernova explosion observed by Chinese astronomers in 1054 AD. At its heart lies a rapidly spinning neutron star — the Crab Pulsar.",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Crab_Nebula.jpg/800px-Crab_Nebula.jpg",
-        integration: 14.0
-      },
-      {
-        id: "M27",
         name: "Dumbbell Nebula",
         type: "planetary",
         typeFull: "Planetary Nebula",
@@ -1013,164 +875,10 @@
         mag: "7.5",
         sizeArc: "8′ × 5.7′",
         size: "md",
-        notes: "Largest planetary nebula",
-        desc: "The first planetary nebula ever discovered (by Messier himself in 1764). Its apple-core or dumbbell shape is obvious even in small telescopes.",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/M27_-_Dumbbell_Nebula.jpg/800px-M27_-_Dumbbell_Nebula.jpg",
-        integration: 6.5
-      },
-      {
-        id: "M51",
-        name: "Whirlpool Galaxy",
-        type: "galaxy",
-        typeFull: "Spiral Galaxy",
-        constellation: "Canes Venatici",
-        mag: "8.4",
-        sizeArc: "11′ × 7′",
-        size: "md",
-        notes: "Interacting with NGC 5195",
-        desc: "A classic grand-design spiral galaxy interacting with its companion NGC 5195. The interaction has triggered widespread star formation and produces the famous spiral arms.",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/M51_%28NGC_5194%29_and_NGC_5195.jpg/800px-M51_%28NGC_5194%29_and_NGC_5195.jpg",
-        integration: 11.0
-      },
-      {
-        id: "M57",
-        name: "Ring Nebula",
-        type: "planetary",
-        typeFull: "Planetary Nebula",
-        constellation: "Lyra",
-        mag: "8.8",
-        sizeArc: "~1.5′",
-        size: "md",
-        notes: "Classic smoke-ring appearance",
-        desc: "One of the most famous planetary nebulae. Through a telescope it looks like a delicate smoke ring or annulus of glowing gas ejected by a dying star.",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/M57_Ring_Nebula.jpg/800px-M57_Ring_Nebula.jpg",
-        integration: 4.0
-      },
-      {
-        id: "M63",
-        name: "Sunflower Galaxy",
-        type: "galaxy",
-        typeFull: "Spiral Galaxy",
-        constellation: "Canes Venatici",
-        mag: "8.6",
-        sizeArc: "~12′ × 7′",
-        size: "md",
-        notes: "Flocculent spiral",
-        desc: "A flocculent spiral galaxy with a bright central core and short, patchy spiral arms that give it a sunflower-like appearance in long-exposure images.",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/M63.jpg/800px-M63.jpg",
-        integration: 8.5
-      },
-      {
-        id: "M64",
-        name: "Black Eye Galaxy",
-        type: "galaxy",
-        typeFull: "Spiral Galaxy",
-        constellation: "Coma Berenices",
-        mag: "8.5",
-        sizeArc: "~10′ × 5′",
-        size: "md",
-        notes: "Also called Evil Eye",
-        desc: "Named for the prominent dark dust lane in front of its bright nucleus. The galaxy has two counter-rotating gas disks, evidence of a past merger.",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Black_Eye_Galaxy.jpg/800px-Black_Eye_Galaxy.jpg",
-        integration: 7.0
-      },
-      {
-        id: "M81",
-        name: "Bode's Galaxy",
-        type: "galaxy",
-        typeFull: "Spiral Galaxy",
-        constellation: "Ursa Major",
-        mag: "6.9",
-        sizeArc: "~27′ × 14′",
-        size: "lg",
-        notes: "Bright northern spiral",
-        desc: "A large grand-design spiral galaxy and the brightest member of the M81 Group. It forms a striking pair with the irregular starburst galaxy M82.",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Messier_81.jpg/800px-Messier_81.jpg",
-        integration: 9.5
-      },
-      {
-        id: "M82",
-        name: "Cigar Galaxy",
-        type: "galaxy",
-        typeFull: "Starburst Galaxy",
-        constellation: "Ursa Major",
-        mag: "8.4",
-        sizeArc: "~11′ × 4′",
-        size: "md",
-        notes: "Edge-on starburst",
-        desc: "An edge-on starburst galaxy famous for its intense star formation and spectacular bipolar outflows of gas driven by supernovae and stellar winds.",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Messier_82.jpg/800px-Messier_82.jpg",
-        integration: 8.0
-      },
-      {
-        id: "M97",
-        name: "Owl Nebula",
-        type: "planetary",
-        typeFull: "Planetary Nebula",
-        constellation: "Ursa Major",
-        mag: "9.9",
-        sizeArc: "~3′",
-        size: "md",
-        notes: "Two dark 'eyes'",
-        desc: "A planetary nebula whose two dark patches resemble the eyes of an owl when viewed through a telescope under good conditions.",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Owl_Nebula.jpg/800px-Owl_Nebula.jpg",
-        integration: 12.0
-      },
-      {
-        id: "M104",
-        name: "Sombrero Galaxy",
-        type: "galaxy",
-        typeFull: "Spiral Galaxy",
-        constellation: "Virgo",
-        mag: "8.0",
-        sizeArc: "9′ × 4′",
-        size: "md",
-        notes: "Edge-on with dust lane",
-        desc: "An edge-on spiral galaxy with a brilliant white core and an unusually large, dark dust lane that gives it the appearance of a Mexican sombrero.",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/M104_ngc4594_sombrero_galaxy_hi-res.jpg/800px-M104_ngc4594_sombrero_galaxy_hi-res.jpg",
-        integration: 10.5
-      },
-      {
-        id: "M11",
-        name: "Wild Duck Cluster",
-        type: "open",
-        typeFull: "Open Cluster",
-        constellation: "Scutum",
-        mag: "5.8",
-        sizeArc: "~14′",
-        size: "md",
-        notes: "Rich open cluster",
-        desc: "One of the richest and most compact open clusters. The brighter stars form a pattern that some observers compare to a flock of wild ducks in flight.",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/M11.jpg/800px-M11.jpg",
-        integration: 3.5
-      },
-      {
-        id: "M3",
-        name: "Messier 3",
-        type: "globular",
-        typeFull: "Globular Cluster",
-        constellation: "Canes Venatici",
-        mag: "6.2",
-        sizeArc: "~18′",
-        size: "md",
-        notes: "Northern spring globular",
-        desc: "One of the brightest and most well-studied globular clusters. It contains hundreds of thousands of stars and is a superb target for medium-sized telescopes.",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Messier3.jpg/800px-Messier3.jpg",
-        integration: 4.0
-      },
-      {
-        id: "M5",
-        name: "Messier 5",
-        type: "globular",
-        typeFull: "Globular Cluster",
-        constellation: "Serpens",
-        mag: "5.6",
-        sizeArc: "~23′",
-        size: "md",
-        notes: "One of the oldest",
-        desc: "A bright globular cluster and one of the oldest known, with an estimated age of around 13 billion years. It is easily located near the star 5 Serpentis.",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Messier_5.jpg/800px-Messier_5.jpg",
-        integration: 4.5
+        notes: "First planetary nebula discovered",
+        desc: "The Dumbbell Nebula (M27) was the first planetary nebula ever discovered, by Charles Messier in 1764. Its distinctive apple-core or dumbbell shape is visible even in small telescopes.",
+        image: "images/M27_Final_07-10-2026-cropped.jpg",
+        integration: 0.83
       }
     ];
 
@@ -1220,26 +928,36 @@
       // Update total integration time (sum of all objects, not just filtered)
       const totalHours = objects.reduce((sum, obj) => sum + (Number(obj.integration) || 0), 0);
       const hoursEl = document.getElementById("total-hours");
+      const unitEl = hoursEl ? hoursEl.nextElementSibling : null;
       if (hoursEl) {
+        const displayValue = totalHours < 1 ? Math.round(totalHours * 60) : totalHours.toFixed(1);
+        const unit = totalHours < 1 ? "min" : "h";
+        if (unitEl) unitEl.textContent = unit;
+
         // Animate the number
         const start = parseFloat(hoursEl.textContent) || 0;
+        const target = parseFloat(displayValue);
         const duration = 600;
         const startTime = performance.now();
         function animate(now) {
           const t = Math.min(1, (now - startTime) / duration);
           const eased = 1 - Math.pow(1 - t, 3);
-          const current = start + (totalHours - start) * eased;
-          hoursEl.textContent = current.toFixed(1);
+          const current = start + (target - start) * eased;
+          hoursEl.textContent = totalHours < 1 ? Math.round(current) : current.toFixed(1);
           if (t < 1) requestAnimationFrame(animate);
         }
         requestAnimationFrame(animate);
       }
       const subEl = document.getElementById("integration-sub");
       if (subEl) {
-        const days = (totalHours / 24).toFixed(1);
-        subEl.textContent = totalHours > 0
-          ? `≈ ${days} days of photon collection`
-          : "add integration times to your objects";
+        if (totalHours <= 0) {
+          subEl.textContent = "add integration times to your objects";
+        } else if (totalHours < 1) {
+          subEl.textContent = "of photon collection";
+        } else {
+          const days = (totalHours / 24).toFixed(1);
+          subEl.textContent = `≈ ${days} days of photon collection`;
+        }
       }
 
       if (filtered.length === 0) {
@@ -1269,7 +987,7 @@
             <div class="card-body">
               <div class="card-id">${obj.id}</div>
               <div class="card-title">${obj.name}</div>
-              <div class="card-meta">${obj.constellation} · mag ${obj.mag}${obj.sizeArc ? " · " + obj.sizeArc : ""}${obj.integration ? " · " + Number(obj.integration).toFixed(1) + "h" : ""}</div>
+              <div class="card-meta">${obj.constellation} · mag ${obj.mag}${obj.sizeArc ? " · " + obj.sizeArc : ""}${obj.integration ? " · " + (obj.integration < 1 ? Math.round(obj.integration * 60) + " min" : Number(obj.integration).toFixed(1) + "h") : ""}</div>
             </div>
           </article>`;
         })
@@ -1305,7 +1023,9 @@
       document.getElementById("lb-type-full").textContent = obj.typeFull;
       document.getElementById("lb-mag").textContent = obj.mag;
       document.getElementById("lb-size").textContent = obj.sizeArc || "—";
-      document.getElementById("lb-int").textContent = obj.integration ? Number(obj.integration).toFixed(1) + " hours" : "—";
+      document.getElementById("lb-int").textContent = obj.integration
+        ? (obj.integration < 1 ? Math.round(obj.integration * 60) + " minutes" : Number(obj.integration).toFixed(1) + " hours")
+        : "—";
       document.getElementById("lb-notes").textContent = obj.notes;
 
       lb.classList.add("open");
@@ -1341,6 +1061,14 @@
     document.getElementById("lb-close").addEventListener("click", closeLightbox);
     document.getElementById("lb-prev").addEventListener("click", () => navigate(-1));
     document.getElementById("lb-next").addEventListener("click", () => navigate(1));
+
+    // Full-size button and image click
+    function openFullSize() {
+      const src = document.getElementById("lb-img").src;
+      if (src) window.open(src, "_blank", "noopener");
+    }
+    document.getElementById("lb-fullsize").addEventListener("click", openFullSize);
+    document.getElementById("lb-img").addEventListener("click", openFullSize);
 
     document.getElementById("lightbox").addEventListener("click", e => {
       if (e.target.id === "lightbox") closeLightbox();
