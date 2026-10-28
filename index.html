@@ -72,7 +72,19 @@
       z-index: 1;
       max-width: 1400px;
       margin: 0 auto;
-      padding: 0 1.25rem 4rem;
+      padding: 0 1rem 3rem;
+    }
+
+    @media (max-width: 480px) {
+      .wrapper {
+        padding: 0 0.75rem 2.5rem;
+      }
+      h1 {
+        font-size: 1.9rem;
+      }
+      .subtitle {
+        font-size: 0.95rem;
+      }
     }
 
     /* Header */
@@ -544,25 +556,26 @@
     }
 
     /* Responsive size spans */
-    @media (max-width: 500px) {
+    @media (max-width: 600px) {
       .gallery {
-        grid-template-columns: 1fr 1fr;
-        gap: 0.45rem;
+        grid-template-columns: 1fr !important;
+        gap: 0.6rem;
       }
+      .card,
       .card.size-xl,
       .card.size-lg {
-        grid-column: span 2;
-        grid-row: span 1;
+        grid-column: span 1 !important;
+        grid-row: span 1 !important;
       }
-      .card.size-xl .card-image {
-        aspect-ratio: 16 / 10;
+      .card-image {
+        aspect-ratio: 16 / 11;
         min-height: 180px;
       }
     }
 
-    @media (min-width: 501px) and (max-width: 799px) {
+    @media (min-width: 601px) and (max-width: 799px) {
       .gallery {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(2, 1fr);
       }
       .card.size-xl {
         grid-column: span 2;
@@ -824,20 +837,74 @@
         max-height: 95vh;
       }
       .lightbox-image {
-        max-height: 45vh;
+        max-height: 40vh;
       }
       .lightbox-image img {
-        max-height: 45vh;
+        max-height: 40vh;
+      }
+      .lightbox-info {
+        padding: 1.25rem 1rem 1.5rem;
+      }
+      .lightbox-meta {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.6rem;
+        font-size: 0.8rem;
       }
       .controls {
         flex-direction: column;
         align-items: stretch;
+        gap: 0.75rem;
       }
       .search-box {
-        max-width: none;
+        max-width: 320px;
+        margin: 0 auto;
+        width: 100%;
       }
       .filters {
-        justify-content: center;
+        justify-content: flex-start;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        padding-bottom: 0.3rem;
+        -webkit-overflow-scrolling: touch;
+      }
+      .filter-btn {
+        flex-shrink: 0;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .widgets-row {
+        gap: 0.6rem;
+        margin: 1rem auto 0.25rem;
+      }
+      .integration-widget,
+      .progress-widget {
+        padding: 0.65rem 0.9rem;
+        border-radius: 12px;
+        max-height: 92px;
+        overflow: hidden;
+      }
+      .integration-icon {
+        font-size: 1.5rem;
+      }
+      .integration-value {
+        font-size: 1.5rem;
+      }
+      .integration-label,
+      .progress-label {
+        font-size: 0.65rem;
+        margin-bottom: 0.05rem;
+      }
+      .integration-sub,
+      .progress-percent {
+        font-size: 0.7rem;
+        margin-top: 0.1rem;
+      }
+      .progress-header {
+        margin-bottom: 0.35rem;
+      }
+      .progress-track {
+        height: 7px;
       }
     }
 
