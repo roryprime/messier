@@ -832,35 +832,60 @@
 
     /* Responsive */
     @media (max-width: 800px) {
+      .lightbox {
+        padding: 0.5rem;
+        align-items: flex-start;
+      }
       .lightbox-content {
         grid-template-columns: 1fr;
-        max-height: 95vh;
+        grid-template-rows: auto 1fr;
+        max-height: 92vh;
+        height: auto;
+        margin-top: 1rem;
       }
       .lightbox-image {
-        max-height: 40vh;
+        max-height: 32vh;
+        min-height: 160px;
+        flex-shrink: 0;
       }
       .lightbox-image img {
-        max-height: 40vh;
+        max-height: 32vh;
       }
       .lightbox-info {
-        padding: 1.25rem 1rem 1.5rem;
+        padding: 1rem 0.9rem 1.25rem;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        max-height: none;
+      }
+      .lightbox-title {
+        font-size: 1.35rem;
+      }
+      .lightbox-desc {
+        font-size: 0.88rem;
+        margin-bottom: 1rem;
       }
       .lightbox-meta {
         grid-template-columns: 1fr 1fr;
-        gap: 0.6rem;
-        font-size: 0.8rem;
+        gap: 0.5rem 0.7rem;
+        font-size: 0.78rem;
+        padding-top: 0.9rem;
+      }
+      .lightbox-meta dt {
+        font-size: 0.68rem;
       }
       .controls {
         flex-direction: column;
-        align-items: stretch;
+        align-items: center;
         gap: 0.75rem;
       }
       .search-box {
-        max-width: 320px;
-        margin: 0 auto;
+        flex: none;
         width: 100%;
+        max-width: 280px;
+        margin: 0 auto;
       }
       .filters {
+        width: 100%;
         justify-content: flex-start;
         overflow-x: auto;
         flex-wrap: nowrap;
@@ -908,9 +933,15 @@
       }
     }
 
-    @media (max-width: 500px) {
-      .gallery {
+    @media (max-width: 420px) {
+      .lightbox-meta {
         grid-template-columns: 1fr;
+      }
+      .lightbox-image {
+        max-height: 28vh;
+      }
+      .lightbox-image img {
+        max-height: 28vh;
       }
     }
   </style>
