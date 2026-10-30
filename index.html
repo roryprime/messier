@@ -170,9 +170,17 @@
     }
 
     .integration-icon {
-      font-size: 2.2rem;
-      opacity: 0.85;
-      filter: drop-shadow(0 0 8px rgba(110, 198, 255, 0.4));
+      width: 48px;
+      height: 48px;
+      flex-shrink: 0;
+      opacity: 0.95;
+      filter: drop-shadow(0 0 8px rgba(110, 198, 255, 0.5));
+    }
+    .integration-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
     }
 
     .integration-content {
@@ -914,7 +922,8 @@
         overflow: hidden;
       }
       .integration-icon {
-        font-size: 1.5rem;
+        width: 36px;
+        height: 36px;
       }
       .integration-value {
         font-size: 1.5rem;
@@ -960,7 +969,7 @@
       <p class="subtitle">A personal collection of photographs of the 110 objects catalogued by Charles Messier, imaged by Rory Prime</p>
       <div class="widgets-row">
         <div class="integration-widget">
-          <div class="integration-icon">⏱️</div>
+          <div class="integration-icon"><img src="images/integration-icon.png" alt="" /></div>
           <div class="integration-content">
             <div class="integration-label">Total Integration</div>
             <div class="integration-value"><span id="total-hours">0</span><span>h</span></div>
@@ -1248,13 +1257,11 @@
                 ? `<img src="${obj.image}" alt="${obj.name}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
                    <div class="placeholder" style="display:none">${obj.id}</div>`
                 : `<div class="placeholder">${obj.id}</div>`}
-              <span class="type-badge type-${obj.type}">${obj.typeFull.split(" ")[0]}</span>
-              ${sizeLabel ? `<span class="size-badge">${sizeLabel}</span>` : ""}
+              <span class="type-badge" style="display:none"></span>
             </div>
             <div class="card-body">
               <div class="card-id">${obj.id}</div>
               <div class="card-title">${obj.name}</div>
-              <div class="card-meta">${obj.constellation} · mag ${obj.mag}${obj.sizeArc ? " · " + obj.sizeArc : ""}${obj.integration ? " · " + (obj.integration < 1 ? Math.round(obj.integration * 60) + " min" : Number(obj.integration).toFixed(1) + "h") : ""}</div>
             </div>
           </article>`;
         })
