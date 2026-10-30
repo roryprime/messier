@@ -969,7 +969,6 @@
       <p class="subtitle">A personal collection of photographs of the 110 objects catalogued by Charles Messier, imaged by Rory Prime</p>
       <div class="widgets-row">
         <div class="integration-widget">
-          <div class="integration-icon"><img src="images/integration-icon.png" alt="" /></div>
           <div class="integration-content">
             <div class="integration-label">Total Integration</div>
             <div class="integration-value"><span id="total-hours">0</span><span>h</span></div>
@@ -1096,22 +1095,40 @@
 
     const objects = [
       {
-        id: "M27",
-        name: "Dumbbell Nebula",
-        type: "planetary",
-        typeFull: "Planetary Nebula",
-        constellation: "Vulpecula",
-        mag: "7.5",
-        sizeArc: "8′ × 5.7′",
+        id: "M1",
+        name: "Crab Nebula",
+        type: "snr",
+        typeFull: "Supernova Remnant",
+        constellation: "Taurus",
+        mag: "8.4",
+        sizeArc: "6′ × 4′",
         size: "md",
-        notes: "First planetary nebula discovered",
-        desc: "The Dumbbell Nebula (M27) was the first planetary nebula ever discovered, by Charles Messier in 1764. Its distinctive apple-core or dumbbell shape is visible even in small telescopes.",
-        image: "images/M27_Final_07-10-2026-cropped.jpg",
-        integration: 0.83,
+        notes: "Remnant of the 1054 supernova · ~6,500 light years",
+        desc: "The Crab Nebula is the expanding remnant of a supernova observed in 1054. At its center is a rapidly spinning neutron star (pulsar). It is one of the brightest and most studied supernova remnants.",
+        image: "images/M1-Final-30-10-2026_Cropped.jpg",
+        integration: 2.0,
         device: "Seestar S50 Pro",
         bortle: "5",
-        subExposure: "10 sec",
+        subExposure: "20 sec",
         filter: "LP filter"
+      },
+      {
+        id: "M2",
+        name: "Messier 2",
+        type: "globular",
+        typeFull: "Globular Cluster",
+        constellation: "Aquarius",
+        mag: "6.3",
+        sizeArc: "~16′",
+        size: "md",
+        notes: "Bright globular in Aquarius · ~36,000 light years",
+        desc: "Messier 2 is a bright, compact globular cluster in Aquarius. It contains hundreds of thousands of stars and is easily visible in binoculars under dark skies.",
+        image: "images/M2-Final-30-10-2026_cropped.jpg",
+        integration: 0.267,
+        device: "Seestar S50 Pro",
+        bortle: "5",
+        subExposure: "20 sec",
+        filter: "IRCut"
       },
       {
         id: "M15",
@@ -1122,7 +1139,7 @@
         mag: "6.2",
         sizeArc: "~12′",
         size: "md",
-        notes: "Great Pegasus Cluster",
+        notes: "Great Pegasus Cluster · ~33,000 light years",
         desc: "Messier 15 is a bright, dense globular cluster in Pegasus. It is one of the oldest known globulars and contains a large number of variable stars.",
         image: "images/M15_Final_07-10-2026-cropped.jpg",
         integration: 0.33,
@@ -1130,6 +1147,24 @@
         bortle: "5",
         subExposure: "20 sec",
         filter: "IRCut"
+      },
+      {
+        id: "M27",
+        name: "Dumbbell Nebula",
+        type: "planetary",
+        typeFull: "Planetary Nebula",
+        constellation: "Vulpecula",
+        mag: "7.5",
+        sizeArc: "8′ × 5.7′",
+        size: "md",
+        notes: "First planetary nebula discovered · ~1,250 light years",
+        desc: "The Dumbbell Nebula (M27) was the first planetary nebula ever discovered, by Charles Messier in 1764. Its distinctive apple-core or dumbbell shape is visible even in small telescopes.",
+        image: "images/M27_Final_07-10-2026-cropped.jpg",
+        integration: 0.83,
+        device: "Seestar S50 Pro",
+        bortle: "5",
+        subExposure: "10 sec",
+        filter: "LP filter"
       },
       {
         id: "M33",
@@ -1140,7 +1175,7 @@
         mag: "5.7",
         sizeArc: "73′ × 45′",
         size: "lg",
-        notes: "Third-largest Local Group member",
+        notes: "Third-largest Local Group member · ~2.7 million light years",
         desc: "The Triangulum Galaxy is a face-on spiral and a member of the Local Group. Under dark skies it can be glimpsed with the naked eye; its large angular size rewards wide-field imaging.",
         image: "images/M33_Final_07-10-2026.jpg",
         integration: 3.5,
@@ -1308,12 +1343,31 @@
 
       lb.classList.add("open");
       document.body.style.overflow = "hidden";
+
+      // Push a history entry so the system back button closes the lightbox
+      if (!history.state || !history.state.lightbox) {
+        history.pushState({ lightbox: true }, "");
+      }
     }
 
-    function closeLightbox() {
-      document.getElementById("lightbox").classList.remove("open");
+    function closeLightbox(fromPopState = false) {
+      const lb = document.getElementById("lightbox");
+      if (!lb.classList.contains("open")) return;
+      lb.classList.remove("open");
       document.body.style.overflow = "";
+      // If closed via UI (not back button), pop the history entry we added
+      if (!fromPopState && history.state && history.state.lightbox) {
+        history.back();
+      }
     }
+
+    // System back button / browser back gesture closes lightbox
+    window.addEventListener("popstate", () => {
+      const lb = document.getElementById("lightbox");
+      if (lb.classList.contains("open")) {
+        closeLightbox(true);
+      }
+    });
 
     function navigate(dir) {
       const next = currentIndex + dir;
