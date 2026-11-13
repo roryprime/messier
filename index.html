@@ -1114,6 +1114,8 @@
      *  1. Place your image files in a folder (e.g. ./images/)
      *  2. Update the "image" property for each object below.
      *     Example: image: "images/m31-andromeda.jpg"
+     *     Cards and the lightbox use images/web/ when that file exists,
+     *     and fall back to the original. Full size always opens images/.
      *  3. You can also use absolute URLs or CDN links.
      *  4. Keep the "id" unique (M1–M110). Add or remove objects freely.
      *
@@ -1583,7 +1585,7 @@
           <article class="card ${sizeClass}" data-index="${i}" tabindex="0" role="button" aria-label="View ${obj.id} ${obj.name}">
             <div class="card-image">
               ${hasImage
-                ? `<img src="${obj.image}" alt="${obj.name}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+                ? `<img src="${displayImage(obj.image)}" data-full="${obj.image}" alt="${obj.name}" loading="lazy" onerror="if(!this.dataset.triedFull&&this.dataset.full){this.dataset.triedFull='1';this.src=this.dataset.full;return;}this.style.display='none';this.nextElementSibling.style.display='flex'" />
                    <div class="placeholder" style="display:none">${obj.id}</div>`
                 : `<div class="placeholder">${obj.id}</div>`}
               <span class="type-badge" style="display:none"></span>
@@ -1608,6 +1610,11 @@
       });
     }
 
+    function displayImage(path) {
+      if (!path || !path.startsWith("images/") || path.startsWith("images/web/")) return path || "";
+      return "images/web/" + path.slice("images/".length);
+    }
+
     function integrationLabel(obj) {
       if (obj.cropOf) {
         const source = objects.find(item => item.id === obj.cropOf);
@@ -1627,8 +1634,11 @@
       if (!obj) return;
 
       const lb = document.getElementById("lightbox");
-      document.getElementById("lb-img").src = obj.image || "";
-      document.getElementById("lb-img").alt = obj.name;
+      const lbImg = document.getElementById("lb-img");
+      lbImg.dataset.full = obj.image || "";
+      lbImg.dataset.triedFull = "";
+      lbImg.src = displayImage(obj.image || "");
+      lbImg.alt = obj.name;
       document.getElementById("lb-id").textContent = obj.id;
       document.getElementById("lb-title").textContent = obj.name;
       document.getElementById("lb-type").textContent = obj.typeFull;
@@ -1698,11 +1708,17 @@
 
     // Full-size button and image click
     function openFullSize() {
-      const src = document.getElementById("lb-img").src;
-      if (src) window.open(src, "_blank", "noopener");
+      const full = document.getElementById("lb-img").dataset.full;
+      if (full) window.open(full, "_blank", "noopener");
     }
     document.getElementById("lb-fullsize").addEventListener("click", openFullSize);
     document.getElementById("lb-img").addEventListener("click", openFullSize);
+    document.getElementById("lb-img").addEventListener("error", function () {
+      if (!this.dataset.triedFull && this.dataset.full) {
+        this.dataset.triedFull = "1";
+        this.src = this.dataset.full;
+      }
+    });
 
     document.getElementById("lightbox").addEventListener("click", e => {
       if (e.target.id === "lightbox") closeLightbox();
