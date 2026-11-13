@@ -1124,6 +1124,9 @@
      *    Add an "integration" property (number of hours) to each object.
      *    The total across all objects is shown in the header widget.
      *    Example: integration: 8.5
+     *    A crop of another frame should set integration: 0 and cropOf: "M31".
+     *    It still counts toward the Messier progress. The lightbox reads
+     *    "Crop of M31 (8.6 h)" from the source object's integration.
      * ============================================================
      */
 
@@ -1216,6 +1219,43 @@
         device: "Seestar S50 Pro",
         bortle: "5",
         subExposure: "10 sec",
+        filter: "IR Cut"
+      },
+      {
+        id: "M31",
+        name: "Andromeda Galaxy",
+        type: "galaxy",
+        typeFull: "Spiral Galaxy",
+        constellation: "Andromeda",
+        mag: "3.4",
+        sizeArc: "178′ × 63′",
+        size: "xl",
+        notes: "Nearest major galaxy · ~2.5 million light years",
+        desc: "The Andromeda Galaxy (M31) is the nearest major galaxy to the Milky Way, a large spiral classified SA(s)b in visible light. Its disk is visible to the naked eye under a dark sky and stretches several degrees across Andromeda.",
+        image: "images/M31-Final-01-10-2026.jpg",
+        integration: 8.6,
+        device: "Seestar S50 Pro",
+        bortle: "5",
+        subExposure: "20 sec",
+        filter: "IR Cut"
+      },
+      {
+        id: "M32",
+        name: "Messier 32",
+        type: "galaxy",
+        typeFull: "Compact Elliptical",
+        constellation: "Andromeda",
+        mag: "8.1",
+        sizeArc: "8.7′ × 6.5′",
+        size: "md",
+        notes: "cE2 satellite of M31 · ~2.5 million light years",
+        desc: "Messier 32 is a compact dwarf elliptical (cE2), a close satellite of the Andromeda Galaxy. This frame is a crop of the M31 exposure, showing the dense companion beside Andromeda's nucleus.",
+        image: "images/M32-Final-01-10-2026.jpg",
+        integration: 0,
+        cropOf: "M31",
+        device: "Seestar S50 Pro",
+        bortle: "5",
+        subExposure: "20 sec",
         filter: "IR Cut"
       },
       {
@@ -1415,6 +1455,25 @@
         bortle: "5",
         subExposure: "20 sec",
         filter: "IR Cut"
+      },
+      {
+        id: "M110",
+        name: "Messier 110",
+        type: "galaxy",
+        typeFull: "Dwarf Elliptical",
+        constellation: "Andromeda",
+        mag: "8.5",
+        sizeArc: "21.9′ × 11′",
+        size: "md",
+        notes: "E5 pec satellite of M31 · ~2.7 million light years",
+        desc: "Messier 110 is a dwarf elliptical (E5 pec) satellite of the Andromeda Galaxy, looser than M32 and marked by dust and a few young stars. This frame is a crop of the same M31 exposure.",
+        image: "images/M110-Final-01-10-2026.jpg",
+        integration: 0,
+        cropOf: "M31",
+        device: "Seestar S50 Pro",
+        bortle: "5",
+        subExposure: "20 sec",
+        filter: "IR Cut"
       }
     ];
 
@@ -1546,6 +1605,18 @@
       });
     }
 
+    function integrationLabel(obj) {
+      if (obj.cropOf) {
+        const source = objects.find(item => item.id === obj.cropOf);
+        const hours = source ? Number(source.integration) : 0;
+        return hours ? `Crop of ${obj.cropOf} (${hours.toFixed(1)} h)` : `Crop of ${obj.cropOf}`;
+      }
+      if (!obj.integration) return "—";
+      return obj.integration < 1
+        ? Math.round(obj.integration * 60) + " minutes"
+        : Number(obj.integration).toFixed(1) + " hours";
+    }
+
     // ---- Lightbox ----
     function openLightbox(index) {
       currentIndex = index;
@@ -1564,9 +1635,7 @@
       document.getElementById("lb-type-full").textContent = obj.typeFull;
       document.getElementById("lb-mag").textContent = obj.mag;
       document.getElementById("lb-size").textContent = obj.sizeArc || "—";
-      document.getElementById("lb-int").textContent = obj.integration
-        ? (obj.integration < 1 ? Math.round(obj.integration * 60) + " minutes" : Number(obj.integration).toFixed(1) + " hours")
-        : "—";
+      document.getElementById("lb-int").textContent = integrationLabel(obj);
       document.getElementById("lb-device").textContent = obj.device || "—";
       document.getElementById("lb-bortle").textContent = obj.bortle || "—";
       document.getElementById("lb-sub").textContent = obj.subExposure || "—";
